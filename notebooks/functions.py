@@ -5,6 +5,7 @@
 
 # Remember to modify your functions to use the template shown below
 
+'''
 def function_name(input1: data_type1, input2: data_type2,..., opt_arg: data_type_opt= default_value) -> output_data_type:
 	"""
 	Add a description of what the function does
@@ -24,3 +25,11 @@ def function_name(input1: data_type1, input2: data_type2,..., opt_arg: data_type
 
 	
 	return opuput
+'''
+
+def function_import_libraries():
+	import pandas as pd
+	import numpy as np
+	import matplotlib.pyplot as plt
+	import seaborn as sns
+	import re

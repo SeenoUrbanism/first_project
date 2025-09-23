@@ -1,5 +1,8 @@
 input_data:
   file: "../data/raw/raw_data_file.csv"
+  file1: "../data/raw/raw_data_Jobs_NYC_Posting.csv"
+  file2: "../data/raw/raw_data_Jobs_NYC_Posting2.csv"
 
 output_data:
   file: "../data/clean/cleaned_data_file.csv"
+  file1: "../data/clean/cleaned_data_jobdata_dropped"
