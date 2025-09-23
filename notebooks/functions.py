@@ -5,6 +5,8 @@
 
 # Remember to modify your functions to use the template shown below
 
+import pandas as pd
+
 '''
 def function_name(input1: data_type1, input2: data_type2,..., opt_arg: data_type_opt= default_value) -> output_data_type:
 	"""
@@ -27,9 +29,12 @@ def function_name(input1: data_type1, input2: data_type2,..., opt_arg: data_type
 	return opuput
 '''
 
-def function_import_libraries():
-	import pandas as pd
-	import numpy as np
-	import matplotlib.pyplot as plt
-	import seaborn as sns
-	import re
+# Standardize column names
+def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    df.columns = df.columns.str.strip().str.replace(' ', '_')
+    return df
+
+
+def drop_duplicates(df: pd.DataFrame, column) -> pd.DataFrame: 
+    return df.drop_duplicates(subset=[column])
+     
