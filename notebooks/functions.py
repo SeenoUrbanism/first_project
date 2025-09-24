@@ -32,10 +32,12 @@ def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
 
 # Drop unnecessary columns
 def drop_irrelevant_columns(df: pd.DataFrame, columns) -> pd.DataFrame:
-    return df.drop(columns=columns, axis=1, inplace=True, errors="ignore")
+    df_drop_cols = df.drop(columns=columns, axis=1, errors="ignore")
+    return df_drop_cols
 
 # Filters rows in 'column' of the dataframe that match the provided regex pattern.
 def filter_by_regex_pattern(df: pd.DataFrame, column, regex_pattern: str) -> pd.DataFrame:
+    df[column] = df[column].lower()
     mask = df[column].str.contains(regex_pattern, flags=re.IGNORECASE, na=False, regex=True)
     return df[mask].copy().reset_index(drop=True)
 
@@ -45,7 +47,7 @@ def standardize_dates(df: pd.DataFrame, column) -> pd.DataFrame:
     # Make a copy of df
     df_merged_dates = df.copy()
     # Convert 'post_until' to datetime (with your format)
-    df_merged_dates['post_until'] = pd.to_datetime(df_merged_dates['post_until'], format="%d-%b-%Y", errors='coerce')
+    df_merged_dates[column] = pd.to_datetime(df_merged_dates[column], format="%d-%b-%Y", errors='coerce')
     # Format 'post_until' as string in 'dd-mm-YYYY'
-    df_merged_dates['post_until'] = df_merged_dates['post_until'].dt.strftime('%d-%m-%Y')
+    df_merged_dates[column] = df_merged_dates[column].dt.strftime('%d-%m-%Y')
     return df_merged_dates
