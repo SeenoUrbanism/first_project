@@ -24,6 +24,7 @@ def drop_duplicates(df: pd.DataFrame, column) -> pd.DataFrame:
 def concat_dataframes(left_df, right_df):
 	return pd.concat([left_df,right_df], ignore_index = True)
 
+# Removes all punctuation symbols from a given string. Often used during text preprocessing to standardize and clean up textual data for analysis or NLP.
 def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
     # Replace word/word and word-word with space between words
     pattern_slash = r'\b(\w+)\/(\w+)\b'
@@ -32,20 +33,20 @@ def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
         # Replace word/word and word-word
         df[col] = df[col].apply(lambda x: re.sub(pattern_slash, r'\1 \2', x) if isinstance(x, str) else x)
         df[col] = df[col].apply(lambda x: re.sub(pattern_dash, r'\1 \2', x) if isinstance(x, str) else x)
-        # Remove remaining punctuation (keep only letters, numbers, spaces)
-        df[col] = df[col].apply(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
         # Lowercase, remove extra spaces
         df[col] = df[col].str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
+    
+    # Remove remaining punctuation (keep only letters, numbers, spaces) --> Outside the for loop
+    df[columns] = df[columns].map(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
+
     return df
 
-# Removes all punctuation symbols from a given string. Often used during text preprocessing to standardize and clean up textual data for analysis or NLP.
 # def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
     
 #     df[columns] = df[columns].map(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
 #     # Lowercase All Categorical/Text Columns and Remove Extra Spaces
 #     for col in columns:
 #         df[col] = df[col].str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
-    
 #     return df
 
 # def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
@@ -61,8 +62,7 @@ def drop_irrelevant_columns(df: pd.DataFrame, columns) -> pd.DataFrame:
     df_drop_cols = df.drop(columns=columns, axis=1, errors="ignore")
     return df_drop_cols
 
-# Renames columns to a consistent format (e.g., lowercase, underscores instead of spaces). 
-# This standardization simplifies downstream code and avoids column name mismatches.
+
 def filter_by_regex_pattern(df: pd.DataFrame, column, regex_pattern: str) -> pd.DataFrame:
     df[column] = df[column].str.lower()
     mask = df[column].str.contains(regex_pattern, flags=re.IGNORECASE, na=False, regex=True)
