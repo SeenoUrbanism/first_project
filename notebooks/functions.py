@@ -24,13 +24,37 @@ def drop_duplicates(df: pd.DataFrame, column) -> pd.DataFrame:
 def concat_dataframes(left_df, right_df):
 	return pd.concat([left_df,right_df], ignore_index = True)
 
-# Removes all punctuation symbols from a given string. Often used during text preprocessing to standardize and clean up textual data for analysis or NLP.
 def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
-    df[columns] = df[columns].map(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
-    # Lowercase All Categorical/Text Columns and Remove Extra Spaces
+    # Replace word/word and word-word with space between words
+    pattern_slash = r'\b(\w+)\/(\w+)\b'
+    pattern_dash = r'\b(\w+)\-(\w+)\b'
     for col in columns:
+        # Replace word/word and word-word
+        df[col] = df[col].apply(lambda x: re.sub(pattern_slash, r'\1 \2', x) if isinstance(x, str) else x)
+        df[col] = df[col].apply(lambda x: re.sub(pattern_dash, r'\1 \2', x) if isinstance(x, str) else x)
+        # Remove remaining punctuation (keep only letters, numbers, spaces)
+        df[col] = df[col].apply(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
+        # Lowercase, remove extra spaces
         df[col] = df[col].str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
     return df
+
+# Removes all punctuation symbols from a given string. Often used during text preprocessing to standardize and clean up textual data for analysis or NLP.
+# def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
+    
+#     df[columns] = df[columns].map(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
+#     # Lowercase All Categorical/Text Columns and Remove Extra Spaces
+#     for col in columns:
+#         df[col] = df[col].str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
+    
+#     return df
+
+# def remove_all_punctuation(df: pd.DataFrame, columns) -> pd.DataFrame:
+#     for col in columns:
+#         df[col] = df[col].apply(
+#             lambda x: re.sub(r'[^\w\s]', ' ', x) if isinstance(x, str) else x)  # Replace \ punctuation with space
+#         df[col] = df[col].apply(lambda x: re.sub(r'\s+', ' ', x) if isinstance(x, str) else x)  # Remove extra spaces
+#         df[col] = df[col].str.lower().str.strip()  # Lowercase & clean spaces
+#     return df
 
 # Drops specified columns from a DataFrame, helping reduce dimensionality and focus on relevant variables for analysis
 def drop_irrelevant_columns(df: pd.DataFrame, columns) -> pd.DataFrame:
