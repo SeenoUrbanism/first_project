@@ -1,77 +1,112 @@
-# Project overview
-...
+# NYC Jobs Data Analysis & Data Cleaning Project
 
-# Installation
+## Overview
 
-1. **Clone the repository**:
+This project focuses on cleaning, transforming, and analyzing public job postings for New York City, using a structured Python (Pandas) workflow and custom functions for robust data wrangling. The source data includes large CSVs with diverse job roles, salary ranges, and categorical features. The main goal is to provide clean, analysis-ready datasets for insights into salary distributions, contract types, agency trends, and demand for data-centric skills.
 
-```bash
-git clone https://github.com/YourUsername/repository_name.git
-```
+The project is organized into modular Jupyter notebooks and Python scripts, with a special emphasis on reproducible preprocessing and targeted extraction of roles related to data analysis, engineering, and modern data skills.
 
-2. **Install UV**
+---
 
-If you're a MacOS/Linux user type:
+## Data Sources
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+- **NYC Jobs CSV files:** Two separate CSVs with thousands of job postings, each containing up to 30 columns.
+- **YAML configuration:** Used to manage file paths and input/output references dynamically.
 
-If you're a Windows user open an Anaconda Powershell Prompt and type :
+---
 
-```bash
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
+## Main Notebooks and Scripts
 
-3. **Create an environment**
+### 1. `data_wrangling.ipynb`
 
-```bash
-uv venv 
-```
+- Loads raw CSVs and YAML config.
+- Applies custom cleaning functions from `functions.py`:
+  - Standardizes column names.
+  - Drops duplicates by job ID.
+  - Removes irrelevant columns (retaining only those needed for analysis).
+  - Cleans punctuation and normalizes text fields (e.g., job titles, skills).
+  - Standardizes date columns to pandas datetime objects.
+- Filters jobs by:
+  - **Business title** (extracts "data analyst", "data engineer", etc.).
+  - **Preferred skills** (finds posts mentioning SQL, Python, BI, Tableau, ML, etc.).
+  - Separates non-data jobs.
+- Outputs three grouped CSVs:
+  - All other jobs.
+  - Data analyst/engineer roles.
+  - Jobs requiring data-centric skills.
+- Each step includes summary tables of nulls, column types, and value counts.
 
-3. **Activate the environment**
+### 2. `functions.py`
 
-If you're a MacOS/Linux user type (if you're using a bash shell):
+- Contains all custom data cleaning and transformation functions:
+  - Standardize column names.
+  - Drop duplicates.
+  - Concatenate DataFrames.
+  - Remove punctuation and lowercase.
+  - Drop irrelevant columns.
+  - Regex-based row filtering.
+  - Standardize dates.
+- Functions are written for flexible, repeatable use in notebooks.
 
-```bash
-source ./venv/bin/activate
-```
+### 3. `data_insights - Copy.ipynb`
 
-If you're a MacOS/Linux user type (if you're using a csh/tcsh shell):
+- Loads cleaned CSVs and applies further transformation as needed.
+- Explores:
+  - Salary distributions by role type and skill requirements.
+  - Contract frequency (annual, hourly, daily) by group.
+  - Posting trends over time, highlighting recent demand for data talent.
+- Produces visualizations (matplotlib, seaborn):
+  - KDE plots for salary bands.
+  - Grouped bar charts for contract type.
+  - Histograms for posting year.
+- Documented code cells explain what each plot means and how to interpret results.
 
-```bash
-source ./venv/bin/activate.csh
-```
+---
 
-If you're a Windows user type:
+## Key Features
 
-```bash
-.\venv\Scripts\activate
-```
+- **Robust Data Cleaning:** Handles missing values, inconsistent text, irrelevant columns, and duplicates.
+- **Skill Filtering:** Extracts jobs by business title and by presence of data-related keywords in the skills field using regex.
+- **Date Normalization:** Converts multiple date formats to pandas datetime for time-series analysis.
+- **Modular Outputs:** Splits the cleaned data into logical groups for focused analysis.
+- **Configurable Workflow:** Uses YAML for paths, making the notebooks portable and reusable.
 
-4. **Install dependencies**:
+---
 
-```bash
-uv pip install -r requirements.txt
-```
+## Example Insights
 
-# Questions 
-...
+- **Salary Distribution:** Data analyst and engineering roles tend to offer higher starting salaries than general job postings. Roles mentioning modern data skills also skew toward higher pay.
+- **Contract Type:** Most data-related roles are annual contracts, with hourly and daily contracts being rare.
+- **Trends Over Time:** Demand for data-centric jobs is increasing, with a larger proportion of postings appearing in recent years.
 
-# Dataset 
-...
+---
 
-## Main dataset issues
+## How to Use
 
-- ...
-- ...
-- ...
+1. **Configure file paths:** Update `config.yaml` as needed for input/output CSVs.
+2. **Run `data_wrangling.ipynb`:** This notebook processes raw data into analysis-ready CSVs.
+3. **Run `data_insights - Copy.ipynb`:** Generates summary tables and visualizations for further insights.
+4. **Customize filtering:** Adjust regex patterns or column lists in the notebooks/scripts to target different roles or skills.
 
-## Solutions for the dataset issues
-...
+---
 
-# Conclussions
-...
+## Files Included
 
-# Next steps
-...
+- `data_wrangling.ipynb` — Main notebook for data cleaning and preparation.
+- `functions.py` — Library of custom preprocessing functions.
+- `data_insights - Copy.ipynb` — Notebook for data exploration and visualization.
+- **CSV Outputs:** Grouped/cleaned datasets for further analysis (paths managed via YAML).
+- **YAML config:** Dynamic file management for all steps.
+
+---
+
+## Authors
+- Janna Julian
+- Sina Yazdi
+- Luis Pablo Aiello
+
+---
+
+## License
+
+This repository is for educational, analytical, and non-commercial purposes only. Data is derived from publicly available NYC jobs datasets.
