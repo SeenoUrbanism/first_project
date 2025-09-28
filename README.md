@@ -6,35 +6,36 @@ This project focuses on cleaning, transforming, and analyzing public job posting
 
 The project is organized into modular Jupyter notebooks and Python scripts, with a special emphasis on reproducible preprocessing and targeted extraction of roles related to data analysis, engineering, and modern data skills.
 
+The workflow is structured around dynamic file paths managed via a YAML configuration file, ensuring portability and easy customization.
+
 ---
 
 ## Data Sources
 
 - **NYC Jobs CSV files:** Two separate CSVs with thousands of job postings, each containing up to 30 columns.
-- **YAML configuration:** Used to manage file paths and input/output references dynamically.
+- **YAML configuration:** Manages all input/output paths for raw and cleaned data, as well as output figures.
 
 ---
 
-## Main Notebooks and Scripts
+## Main Files and Structure
 
 ### 1. `data_wrangling.ipynb`
 
-- Loads raw CSVs and YAML config.
-- Applies custom cleaning functions from `functions.py`:
+- Loads raw CSVs and YAML config for path management.
+- Applies cleaning functions from `functions.py`:
   - Standardizes column names.
   - Drops duplicates by job ID.
-  - Removes irrelevant columns (retaining only those needed for analysis).
-  - Cleans punctuation and normalizes text fields (e.g., job titles, skills).
-  - Standardizes date columns to pandas datetime objects.
+  - Removes unnecessary columns.
+  - Cleans punctuation and normalizes text (job titles, skills).
+  - Converts dates to pandas datetime format.
 - Filters jobs by:
-  - **Business title** (extracts "data analyst", "data engineer", etc.).
-  - **Preferred skills** (finds posts mentioning SQL, Python, BI, Tableau, ML, etc.).
-  - Separates non-data jobs.
+  - **Business title** (extracts roles like "data analyst", "data engineer").
+  - **Preferred skills** (finds mentions of SQL, Python, BI, Tableau, ML, etc.).
 - Outputs three grouped CSVs:
   - All other jobs.
   - Data analyst/engineer roles.
-  - Jobs requiring data-centric skills.
-- Each step includes summary tables of nulls, column types, and value counts.
+  - Jobs requiring specific data skills.
+- Includes summary tables for nulls, column types, and value counts.
 
 ### 2. `functions.py`
 
@@ -57,9 +58,19 @@ The project is organized into modular Jupyter notebooks and Python scripts, with
   - Posting trends over time, highlighting recent demand for data talent.
 - Produces visualizations (matplotlib, seaborn):
   - KDE plots for salary bands.
-  - Grouped bar charts for contract type.
+  - Bar charts for contract types and agency hiring.
   - Histograms for posting year.
-- Documented code cells explain what each plot means and how to interpret results.
+- Includes documented code cells explaining each plot and table and how to interpret results.
+
+---
+
+## Configuration
+
+- All file paths for raw inputs, cleaned outputs, and figures are managed in `config.yaml`:
+  - Update this file to change inputs and outputs without modifying notebook logic.
+  - Example outputs managed via YAML include:
+    - Cleaned CSVs by job type and skill.
+    - Figures for salary, agency, and trends.
 
 ---
 
@@ -75,18 +86,19 @@ The project is organized into modular Jupyter notebooks and Python scripts, with
 
 ## Example Insights
 
-- **Salary Distribution:** Data analyst and engineering roles tend to offer higher starting salaries than general job postings. Roles mentioning modern data skills also skew toward higher pay.
-- **Contract Type:** Most data-related roles are annual contracts, with hourly and daily contracts being rare.
-- **Trends Over Time:** Demand for data-centric jobs is increasing, with a larger proportion of postings appearing in recent years.
+- **Salary Distribution:** Data analyst and engineering roles have higher median starting salaries compared to general postings. Jobs mentioning modern data skills also tend to offer higher pay.
+- **Contract Type:** Most data-related roles are annual contracts; hourly/daily contracts are rare.
+- **Trends Over Time:** Demand for data-centric jobs is increasing, with more postings in recent years.
+- **Agency Hiring:** Top agencies hiring for data roles can be visualized and ranked using the included analysis
 
 ---
 
 ## How to Use
 
-1. **Configure file paths:** Update `config.yaml` as needed for input/output CSVs.
+1. **Configure file paths:** Update `config.yaml` as needed for input/output CSVs and figures.
 2. **Run `data_wrangling.ipynb`:** This notebook processes raw data into analysis-ready CSVs.
-3. **Run `data_insights - Copy.ipynb`:** Generates summary tables and visualizations for further insights.
-4. **Customize filtering:** Adjust regex patterns or column lists in the notebooks/scripts to target different roles or skills.
+3. **Run `data_insights.ipynb`:** Explore cleaned datasets and generate summary tables and visualizations.
+4. **Customize filtering:** Adjust regex patterns or column selections in notebooks/scripts to focus on different roles or skills if needed.
 
 ---
 
@@ -94,9 +106,13 @@ The project is organized into modular Jupyter notebooks and Python scripts, with
 
 - `data_wrangling.ipynb` — Main notebook for data cleaning and preparation.
 - `functions.py` — Library of custom preprocessing functions.
-- `data_insights - Copy.ipynb` — Notebook for data exploration and visualization.
-- **CSV Outputs:** Grouped/cleaned datasets for further analysis (paths managed via YAML).
-- **YAML config:** Dynamic file management for all steps.
+- `data_insights.ipynb` — Notebook for data analysis and visualization.
+- `config.yaml` — Centralized config for all input/output file locations.
+- **CSV Outputs:** Cleaned, grouped datasets for further analysis (paths managed with YAML).
+- **Figures:** Visual outputs saved per YAML config.
+
+## Presentation Slides
+[[Link to Slides](https://www.canva.com/design/DAG0Ra3GTHo/xIG_axW6IWI_54hR0ECAoQ/edit?utm_content=DAG0Ra3GTHo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)]
 
 ---
 
